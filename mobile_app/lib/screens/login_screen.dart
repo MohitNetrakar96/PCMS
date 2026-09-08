@@ -60,6 +60,340 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  void _openForgotPasswordSheet() {
+    final resetEmailCtrl = TextEditingController(text: _emailCtrl.text.trim());
+    final resetOtpCtrl = TextEditingController();
+    final resetNewPassCtrl = TextEditingController();
+    final resetConfirmPassCtrl = TextEditingController();
+    int resetStep = 1;
+    bool isResetLoading = false;
+    String? resetError;
+    String? resetOtpGenerated;
+    bool obscureNew = true;
+    bool obscureConfirm = true;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => StatefulBuilder(
+        builder: (modalCtx, setModalState) => Container(
+          padding: EdgeInsets.only(
+            left: 22,
+            right: 22,
+            top: 24,
+            bottom: MediaQuery.of(modalCtx).viewInsets.bottom + 24,
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: kRoyalPurple.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.lock_reset_rounded, color: kRoyalPurple, size: 24),
+                    ),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Reset Password',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: kDeepObsidian),
+                          ),
+                          Text(
+                            'Secure 2-step account recovery via OTP',
+                            style: TextStyle(fontSize: 11.5, color: Color(0xFF6B587B)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded, color: Colors.grey),
+                      onPressed: () => Navigator.pop(ctx),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+
+                if (resetError != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(bottom: 14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFEF2F2),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFFECACA)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error_outline_rounded, color: Color(0xFFDC2626), size: 18),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            resetError!,
+                            style: const TextStyle(color: Color(0xFFDC2626), fontSize: 12, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+
+                if (resetStep == 1) ...[
+                  const Text(
+                    'REGISTERED EMAIL OR EMPLOYEE ID',
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: kRoyalPurple, letterSpacing: 0.8),
+                  ),
+                  const SizedBox(height: 6),
+                  TextField(
+                    controller: resetEmailCtrl,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: kObsidianOnyx),
+                    decoration: InputDecoration(
+                      hintText: 'e.g. yourname@company.com',
+                      prefixIcon: const Icon(Icons.email_outlined, color: kRoyalPurple, size: 20),
+                      filled: true,
+                      fillColor: kPorcelain,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kSoftLilac)),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: isResetLoading
+                        ? null
+                        : () async {
+                            final target = resetEmailCtrl.text.trim();
+                            if (target.isEmpty) {
+                              setModalState(() => resetError = 'Please enter your registered email or employee ID.');
+                              return;
+                            }
+                            setModalState(() {
+                              isResetLoading = true;
+                              resetError = null;
+                            });
+                            try {
+                              final res = await ApiService.sendOtp(target);
+                              setModalState(() {
+                                isResetLoading = false;
+                                resetOtpGenerated = res['otp']?.toString() ?? '123456';
+                                resetStep = 2;
+                              });
+                            } catch (e) {
+                              setModalState(() {
+                                isResetLoading = false;
+                                resetError = e.toString().replaceAll('Exception: ', '').trim();
+                              });
+                            }
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kRoyalPurple,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    ),
+                    child: isResetLoading
+                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        : const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Send Reset OTP Code', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                              SizedBox(width: 6),
+                              Icon(Icons.arrow_forward_rounded, size: 16),
+                            ],
+                          ),
+                  ),
+                ] else ...[
+                  if (resetOtpGenerated != null) ...[
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      margin: const EdgeInsets.only(bottom: 14),
+                      decoration: BoxDecoration(
+                        color: kSageEmerald.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: kSageEmerald.withOpacity(0.35)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.check_circle_rounded, color: kSageEmerald, size: 18),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'OTP Dispatched: $resetOtpGenerated',
+                              style: const TextStyle(color: Color(0xFF166534), fontSize: 12, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  const Text(
+                    '6-DIGIT VERIFICATION CODE',
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: kRoyalPurple, letterSpacing: 0.8),
+                  ),
+                  const SizedBox(height: 6),
+                  TextField(
+                    controller: resetOtpCtrl,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20, letterSpacing: 6, fontWeight: FontWeight.w900, color: kObsidianOnyx),
+                    decoration: InputDecoration(
+                      hintText: resetOtpGenerated ?? '123456',
+                      prefixIcon: const Icon(Icons.pin_rounded, color: kSageEmerald),
+                      filled: true,
+                      fillColor: kFrostCyan.withOpacity(0.3),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kSageEmerald)),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'NEW SECURITY PASSWORD',
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: kRoyalPurple, letterSpacing: 0.8),
+                  ),
+                  const SizedBox(height: 6),
+                  TextField(
+                    controller: resetNewPassCtrl,
+                    obscureText: obscureNew,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: kObsidianOnyx),
+                    decoration: InputDecoration(
+                      hintText: 'Min 6 characters',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded, color: kRoyalPurple, size: 20),
+                      suffixIcon: IconButton(
+                        icon: Icon(obscureNew ? Icons.visibility_off : Icons.visibility, color: kRoyalPurple.withOpacity(0.6), size: 18),
+                        onPressed: () => setModalState(() => obscureNew = !obscureNew),
+                      ),
+                      filled: true,
+                      fillColor: kPorcelain,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kSoftLilac)),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'CONFIRM NEW PASSWORD',
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: kRoyalPurple, letterSpacing: 0.8),
+                  ),
+                  const SizedBox(height: 6),
+                  TextField(
+                    controller: resetConfirmPassCtrl,
+                    obscureText: obscureConfirm,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: kObsidianOnyx),
+                    decoration: InputDecoration(
+                      hintText: 'Re-enter new password',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded, color: kRoyalPurple, size: 20),
+                      suffixIcon: IconButton(
+                        icon: Icon(obscureConfirm ? Icons.visibility_off : Icons.visibility, color: kRoyalPurple.withOpacity(0.6), size: 18),
+                        onPressed: () => setModalState(() => obscureConfirm = !obscureConfirm),
+                      ),
+                      filled: true,
+                      fillColor: kPorcelain,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kSoftLilac)),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: isResetLoading
+                        ? null
+                        : () async {
+                            final code = resetOtpCtrl.text.trim();
+                            final newPass = resetNewPassCtrl.text;
+                            final confirmPass = resetConfirmPassCtrl.text;
+
+                            if (code.isEmpty) {
+                              setModalState(() => resetError = 'Please enter the 6-digit verification OTP.');
+                              return;
+                            }
+                            if (newPass.length < 6) {
+                              setModalState(() => resetError = 'Password must be at least 6 characters.');
+                              return;
+                            }
+                            if (newPass != confirmPass) {
+                              setModalState(() => resetError = 'Passwords do not match.');
+                              return;
+                            }
+
+                            setModalState(() {
+                              isResetLoading = true;
+                              resetError = null;
+                            });
+
+                            try {
+                              await ApiService.resetPasswordOtp(
+                                email: resetEmailCtrl.text.trim(),
+                                code: code,
+                                password: newPass,
+                              );
+                              if (mounted) {
+                                Navigator.pop(ctx);
+                                setState(() {
+                                  _emailCtrl.text = resetEmailCtrl.text.trim();
+                                  _passCtrl.text = newPass;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Password updated successfully! You can now sign in.'),
+                                    backgroundColor: kSageEmerald,
+                                    duration: Duration(seconds: 4),
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              setModalState(() {
+                                isResetLoading = false;
+                                resetError = e.toString().replaceAll('Exception: ', '').trim();
+                              });
+                            }
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kRoyalPurple,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    ),
+                    child: isResetLoading
+                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        : const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Save New Password & Sign In', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                              SizedBox(width: 6),
+                              Icon(Icons.check_circle_rounded, size: 16),
+                            ],
+                          ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void _handleLogin() async {
     FocusScope.of(context).unfocus();
     final auth = Provider.of<AuthProvider>(context, listen: false);
@@ -562,17 +896,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Contact Branch Administrator to reset credentials.'),
-                                      backgroundColor: kRoyalPurple,
-                                    ),
-                                  );
-                                },
+                                onTap: _openForgotPasswordSheet,
                                 child: const Text(
-                                  'Forgot?',
-                                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: kRoyalPurple),
+                                  'Forgot Password?',
+                                  style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: kRoyalPurple),
                                 ),
                               ),
                             ],
@@ -600,14 +927,31 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ] else ...[
                           if (_otpSent) ...[
-                            const Text(
-                              '6-DIGIT VERIFICATION CODE',
-                              style: TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w800,
-                                color: kRoyalPurple,
-                                letterSpacing: 0.8,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  '6-DIGIT VERIFICATION CODE',
+                                  style: TextStyle(
+                                    fontSize: 10.5,
+                                    fontWeight: FontWeight.w800,
+                                    color: kRoyalPurple,
+                                    letterSpacing: 0.8,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _otpSent = false;
+                                      _otpCtrl.clear();
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Change Email',
+                                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: kRoyalPurple),
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 6),
                             TextField(
@@ -624,6 +968,40 @@ class _LoginScreenState extends State<LoginScreen> {
                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kSageEmerald)),
                                 enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kSageEmerald)),
                                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: kRoyalPurple, width: 2.0)),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Center(
+                              child: TextButton.icon(
+                                onPressed: _sendingOtp
+                                    ? null
+                                    : () async {
+                                        setState(() => _sendingOtp = true);
+                                        try {
+                                          final res = await ApiService.sendOtp(_emailCtrl.text.trim());
+                                          setState(() {
+                                            _sendingOtp = false;
+                                            _generatedOtp = res['otp']?.toString() ?? '123456';
+                                          });
+                                          if (mounted) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text('New OTP Sent: ${_generatedOtp ?? "123456"}'),
+                                                backgroundColor: kSageEmerald,
+                                              ),
+                                            );
+                                          }
+                                        } catch (e) {
+                                          setState(() => _sendingOtp = false);
+                                          if (mounted) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+                                            );
+                                          }
+                                        }
+                                      },
+                                icon: const Icon(Icons.refresh_rounded, size: 14, color: kRoyalPurple),
+                                label: const Text('Resend OTP Code', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: kRoyalPurple)),
                               ),
                             ),
                           ]
@@ -662,15 +1040,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 22,
                                     child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                                   )
-                                : const Row(
+                                : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Authorize & Enter Portal',
-                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                                        _isOtpMode
+                                            ? (!_otpSent ? 'Send 6-Digit OTP' : 'Verify OTP & Enter Portal')
+                                            : 'Authorize & Enter Portal',
+                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
-                                      SizedBox(width: 8),
-                                      Icon(Icons.arrow_forward_rounded, color: kFrostCyan, size: 18),
+                                      const SizedBox(width: 8),
+                                      Icon(
+                                        _isOtpMode && !_otpSent ? Icons.send_rounded : Icons.arrow_forward_rounded,
+                                        color: kFrostCyan,
+                                        size: 18,
+                                      ),
                                     ],
                                   ),
                           ),

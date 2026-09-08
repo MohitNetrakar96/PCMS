@@ -226,9 +226,9 @@ app.post('/api/auth/send-otp', async (req, res) => {
       [target, target]
     );
 
-    const recipientEmail = user ? user.email : (target.includes('@') ? target : 'agent@bankflow.com');
+    const recipientEmail = user ? user.email : target;
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 5 * 60 * 1000;
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
 
     await query.run(
       'INSERT OR REPLACE INTO otps (email, code, expires_at) VALUES (?, ?, ?)',
@@ -266,10 +266,10 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     );
 
     const lookupEmail = user ? user.email : target;
-    const otpRecord = await query.get('SELECT * FROM otps WHERE email = ?', [lookupEmail]);
+    const otpRecord = await query.get('SELECT * FROM otps WHERE LOWER(email) = ?', [lookupEmail]);
 
     if (!otpRecord) {
-      return res.status(400).json({ error: 'No OTP was requested for this account.' });
+      return res.status(400).json({ error: 'No OTP was requested for this account or OTP expired.' });
     }
 
     if (otpRecord.code !== code.toString().trim()) {
@@ -277,36 +277,37 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     }
 
     if (Date.now() > otpRecord.expires_at) {
+      await query.run('DELETE FROM otps WHERE LOWER(email) = ?', [lookupEmail]);
       return res.status(400).json({ error: 'OTP code has expired. Please request a new one.' });
     }
 
-    await query.run('DELETE FROM otps WHERE email = ?', [lookupEmail]);
+    await query.run('DELETE FROM otps WHERE LOWER(email) = ?', [lookupEmail]);
 
-    const activeUser = user || {
-      id: 999,
-      email: lookupEmail,
-      name: lookupEmail.split('@')[0],
-      role: expectedRole || 'Collection Agent',
-      employee_id: 'CAG-TEMP'
-    };
+    if (!user) {
+      return res.status(404).json({ error: 'Account not found. Please create an account via Sign Up first.' });
+    }
 
-    const token = jwt.sign({ userId: activeUser.id, role: activeUser.role, email: activeUser.email }, JWT_SECRET, { expiresIn: '8h' });
-    await logAudit('OTP Login Verified', activeUser.name, activeUser.email, activeUser.role, 'ok', 'Verified via 6-digit OTP');
+    if (expectedRole && user.role.toLowerCase() !== expectedRole.toLowerCase()) {
+      return res.status(403).json({ error: `Access denied: Account role is ${user.role}, but selected role is ${expectedRole}.` });
+    }
+
+    const token = jwt.sign({ userId: user.id, role: user.role, email: user.email }, JWT_SECRET, { expiresIn: '8h' });
+    await logAudit('OTP Login Verified', user.name, user.email, user.role, 'ok', 'Verified via 6-digit OTP');
 
     res.json({
       success: true,
       token,
       user: {
-        id: activeUser.id,
-        email: activeUser.email,
-        name: activeUser.name,
-        role: activeUser.role,
-        employeeId: activeUser.employee_id,
-        phone: activeUser.phone || '',
-        photoUrl: activeUser.photo_url || null,
-        area: activeUser.area || '',
-        route: activeUser.route || '',
-        address: activeUser.address || ''
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        employeeId: user.employee_id,
+        phone: user.phone || '',
+        photoUrl: user.photo_url || null,
+        area: user.area || '',
+        route: user.route || '',
+        address: user.address || ''
       }
     });
   } catch (err) {
@@ -320,44 +321,41 @@ app.post('/api/auth/reset-password-otp', async (req, res) => {
   const target = (email || phone || '').trim().toLowerCase();
 
   if (!target || !code || !password) {
-    return res.status(400).json({ error: 'Missing required parameters.' });
+    return res.status(400).json({ error: 'Missing required parameters (email, code, and new password).' });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters long.' });
   }
 
   try {
-    let user = await query.get(
+    const user = await query.get(
       'SELECT * FROM users WHERE LOWER(email) = ? OR LOWER(employee_id) = ?',
       [target, target]
     );
 
-    const lookupEmail = user ? user.email : target;
-    const otpRecord = await query.get('SELECT * FROM otps WHERE email = ?', [lookupEmail]);
+    if (!user) {
+      return res.status(404).json({ error: 'No registered user found with this email or ID.' });
+    }
+
+    const lookupEmail = user.email;
+    const otpRecord = await query.get('SELECT * FROM otps WHERE LOWER(email) = ?', [lookupEmail]);
 
     if (!otpRecord || otpRecord.code !== code.toString().trim()) {
-      return res.status(400).json({ error: 'Invalid verification code.' });
+      return res.status(400).json({ error: 'Invalid or incorrect verification code.' });
     }
 
     if (Date.now() > otpRecord.expires_at) {
-      return res.status(400).json({ error: 'OTP code has expired.' });
+      await query.run('DELETE FROM otps WHERE LOWER(email) = ?', [lookupEmail]);
+      return res.status(400).json({ error: 'Verification code has expired. Please request a new OTP.' });
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
+    await query.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, user.id]);
+    await query.run('DELETE FROM otps WHERE LOWER(email) = ?', [lookupEmail]);
+    await logAudit('Password Reset', user.name, user.email, user.role, 'ok', 'Password updated successfully via OTP');
 
-    if (user) {
-      await query.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, user.id]);
-    } else {
-      // Auto-register user account into SQLite DB if not registered yet
-      const defaultName = target.split('@')[0];
-      await query.run(
-        'INSERT INTO users (name, email, password, role, employee_id) VALUES (?, ?, ?, ?, ?)',
-        [defaultName, target, hashedPassword, 'Collection Agent', `CAG-${Date.now().toString().slice(-4)}`]
-      );
-      user = await query.get('SELECT * FROM users WHERE LOWER(email) = ?', [target]);
-    }
-
-    await query.run('DELETE FROM otps WHERE email = ?', [lookupEmail]);
-    await logAudit('Password Reset', user.name, user.email, user.role, 'ok', 'Password updated / registered successfully');
-
-    res.json({ success: true, message: 'Password updated successfully. You can now log in.' });
+    res.json({ success: true, message: 'Password updated successfully. You can now sign in with your new password.' });
   } catch (err) {
     console.error('Reset password error:', err);
     res.status(500).json({ error: 'Internal server error.' });
