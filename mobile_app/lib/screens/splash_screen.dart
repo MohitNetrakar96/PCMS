@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    if (authProvider.isAuthenticated) {
+    if (authProvider.isAuthenticated && authProvider.user != null && authProvider.user!.email.trim().isNotEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const DashboardScreen()),

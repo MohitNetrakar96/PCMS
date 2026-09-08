@@ -1,6 +1,7 @@
 // PCMS BankFlow Mobile App - Unit & Model Tests
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pcms_mobile/models/user_model.dart';
 import 'package:pcms_mobile/models/customer_model.dart';
 import 'package:pcms_mobile/models/collection_model.dart';
@@ -8,6 +9,7 @@ import 'package:pcms_mobile/models/account_model.dart';
 import 'package:pcms_mobile/models/audit_model.dart';
 import 'package:pcms_mobile/models/reconciliation_model.dart';
 import 'package:pcms_mobile/models/vault_model.dart';
+import 'package:pcms_mobile/providers/auth_provider.dart';
 
 void main() {
   group('UserModel Tests', () {
@@ -183,6 +185,28 @@ void main() {
       expect(log.action, 'Collection Logged');
       expect(log.status, 'ok');
       expect(log.role, 'Collection Agent');
+    });
+  });
+
+  group('AuthProvider Tests', () {
+    test('login with empty credentials should fail immediately with validation error', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      SharedPreferences.setMockInitialValues({});
+      final auth = AuthProvider();
+      final result = await auth.login('', '');
+      expect(result, false);
+      expect(auth.isAuthenticated, false);
+      expect(auth.errorMessage, 'Email and password are required.');
+    });
+
+    test('logout should clear user and reset error state', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      SharedPreferences.setMockInitialValues({});
+      final auth = AuthProvider();
+      await auth.logout();
+      expect(auth.isAuthenticated, false);
+      expect(auth.user, null);
+      expect(auth.errorMessage, null);
     });
   });
 }

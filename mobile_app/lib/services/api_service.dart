@@ -141,6 +141,12 @@ class ApiService {
 
   static Future<UserModel> asyncLogin(String email, String password, {String? expectedRole}) async {
     final cleanEmail = email.trim().toLowerCase();
+    final cleanPass = password.trim();
+
+    if (cleanEmail.isEmpty || cleanPass.isEmpty) {
+      throw Exception('Email and password are required.');
+    }
+
     try {
       final res = await _postWithFallback('/auth/login', {
         'email': cleanEmail,
@@ -149,81 +155,23 @@ class ApiService {
       });
 
       final data = jsonDecode(res.body);
-      if (res.statusCode == 200 && data['success'] == true) {
+      if (res.statusCode == 200 && data['success'] == true && data['user'] != null) {
         return UserModel.fromJson(data['user'], token: data['token']);
-      } else if (res.statusCode == 401 || (data['error'] != null && data['error'].toString().contains('password'))) {
-        throw Exception(data['error'] ?? 'Incorrect password. Please try again.');
+      } else if (data['error'] != null) {
+        throw Exception(data['error'].toString());
+      } else {
+        throw Exception('Authentication failed. Please verify credentials.');
       }
     } catch (e) {
-      if (e.toString().contains('Incorrect password')) rethrow;
-    }
-
-    // Offline / Standalone Demo Fallback (Guarantees uninterrupted testing)
-    if (cleanEmail.contains('agent')) {
-      return UserModel(
-        id: 1,
-        name: 'Rahul Agent',
-        email: cleanEmail.isEmpty ? 'agent@bankflow.com' : cleanEmail,
-        role: 'Collection Agent',
-        employeeId: 'AG-8821',
-        phone: '9880011223',
-        area: 'Sector 12',
-        route: 'Route A',
-        token: 'offline_token_agent',
-      );
-    } else if (cleanEmail.contains('manager')) {
-      return UserModel(
-        id: 2,
-        name: 'V. K. Sharma',
-        email: cleanEmail.isEmpty ? 'manager@bankflow.com' : cleanEmail,
-        role: 'Branch Manager',
-        employeeId: 'MGR-104',
-        phone: '9845012345',
-        area: 'Main Branch',
-        token: 'offline_token_manager',
-      );
-    } else if (cleanEmail.contains('cashier')) {
-      return UserModel(
-        id: 3,
-        name: 'Priya Cashier',
-        email: cleanEmail.isEmpty ? 'cashier@bankflow.com' : cleanEmail,
-        role: 'Cashier',
-        employeeId: 'CSH-502',
-        phone: '9845099887',
-        area: 'Main Branch Vault',
-        token: 'offline_token_cashier',
-      );
-    } else if (cleanEmail.contains('admin')) {
-      return UserModel(
-        id: 4,
-        name: 'System Admin',
-        email: cleanEmail.isEmpty ? 'admin@bankflow.com' : cleanEmail,
-        role: 'Administrator',
-        employeeId: 'ADM-001',
-        phone: '9800000000',
-        token: 'offline_token_admin',
-      );
-    } else if (cleanEmail.contains('auditor')) {
-      return UserModel(
-        id: 5,
-        name: 'Anand Auditor',
-        email: cleanEmail.isEmpty ? 'auditor@bankflow.com' : cleanEmail,
-        role: 'Auditor',
-        employeeId: 'AUD-301',
-        phone: '9877712345',
-        token: 'offline_token_auditor',
-      );
-    } else {
-      // General user fallback based on expected role or email
-      final assignedRole = expectedRole ?? 'Collection Agent';
-      return UserModel(
-        id: DateTime.now().millisecondsSinceEpoch % 10000,
-        name: cleanEmail.split('@')[0],
-        email: cleanEmail,
-        role: assignedRole,
-        employeeId: 'EMP-${(DateTime.now().millisecondsSinceEpoch % 900) + 100}',
-        token: 'offline_token_user',
-      );
+      final err = e.toString().replaceAll('Exception: ', '').trim();
+      if (err.toLowerCase().contains('connection unavailable') ||
+          err.toLowerCase().contains('socketexception') ||
+          err.toLowerCase().contains('timeoutexception') ||
+          err.toLowerCase().contains('clientexception') ||
+          err.toLowerCase().contains('failed host lookup')) {
+        throw Exception('Unable to connect to banking server. Please check your network or server connection.');
+      }
+      rethrow;
     }
   }
 

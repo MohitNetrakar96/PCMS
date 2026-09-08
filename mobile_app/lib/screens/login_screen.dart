@@ -61,13 +61,26 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLogin() async {
+    FocusScope.of(context).unfocus();
     final auth = Provider.of<AuthProvider>(context, listen: false);
 
+    final email = _emailCtrl.text.trim();
+
     if (_isOtpMode) {
+      if (email.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter your official email or employee ID to receive OTP.'),
+            backgroundColor: Color(0xFFDC2626),
+          ),
+        );
+        return;
+      }
+
       if (!_otpSent) {
         setState(() => _sendingOtp = true);
         try {
-          final res = await ApiService.sendOtp(_emailCtrl.text.trim());
+          final res = await ApiService.sendOtp(email);
           setState(() {
             _sendingOtp = false;
             _otpSent = true;
@@ -80,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
                     const SizedBox(width: 8),
-                    Text('Bank OTP Dispatched: ' + (_generatedOtp ?? '123456')),
+                    Expanded(child: Text('Bank OTP Dispatched: ${_generatedOtp ?? "123456"}')),
                   ],
                 ),
                 backgroundColor: kSageEmerald,
@@ -92,17 +105,31 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() => _sendingOtp = false);
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: ' + e.toString()), backgroundColor: Colors.redAccent),
+              SnackBar(
+                content: Text(e.toString().replaceAll('Exception: ', '').trim()),
+                backgroundColor: const Color(0xFFDC2626),
+              ),
             );
           }
         }
         return;
       } else {
+        final enteredOtp = _otpCtrl.text.trim();
+        if (enteredOtp.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please enter the 6-digit verification code.'),
+              backgroundColor: Color(0xFFDC2626),
+            ),
+          );
+          return;
+        }
+
         setState(() => _sendingOtp = true);
         try {
           final user = await ApiService.verifyOtp(
-            _emailCtrl.text.trim(),
-            _otpCtrl.text.trim().isNotEmpty ? _otpCtrl.text.trim() : (_generatedOtp ?? '123456'),
+            email,
+            enteredOtp,
             expectedRole: _selectedRole,
           );
           await auth.setUser(user);
@@ -114,7 +141,10 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() => _sendingOtp = false);
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('OTP Verification failed: ' + e.toString()), backgroundColor: Colors.redAccent),
+              SnackBar(
+                content: Text(e.toString().replaceAll('Exception: ', '').trim()),
+                backgroundColor: const Color(0xFFDC2626),
+              ),
             );
           }
         }
@@ -122,9 +152,31 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
+    final password = _passCtrl.text;
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your official email or employee ID.'),
+          backgroundColor: Color(0xFFDC2626),
+        ),
+      );
+      return;
+    }
+
+    if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your security password.'),
+          backgroundColor: Color(0xFFDC2626),
+        ),
+      );
+      return;
+    }
+
     final success = await auth.login(
-      _emailCtrl.text.trim(),
-      _passCtrl.text.trim(),
+      email,
+      password,
       role: _selectedRole,
     );
 

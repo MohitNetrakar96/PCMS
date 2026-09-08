@@ -36,12 +36,12 @@ class AuthProvider with ChangeNotifier {
     final route = prefs.getString('user_route');
     final address = prefs.getString('user_address');
 
-    if (email != null && role != null) {
+    if (email != null && email.trim().isNotEmpty && role != null && role.trim().isNotEmpty) {
       _user = UserModel(
         id: prefs.getInt('user_id') ?? 1,
-        name: name ?? email.split('@')[0],
-        email: email,
-        role: role,
+        name: (name != null && name.trim().isNotEmpty) ? name.trim() : email.trim().split('@')[0],
+        email: email.trim(),
+        role: role.trim(),
         employeeId: employeeId,
         phone: phone,
         photoUrl: photoUrl,
@@ -54,15 +54,19 @@ class AuthProvider with ChangeNotifier {
 
       // Silent sync with backend
       fetchProfile();
+    } else {
+      _user = null;
+      notifyListeners();
     }
   }
 
   Future<void> _saveToPrefs(UserModel user) async {
+    if (user.email.trim().isEmpty) return;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('user_id', user.id);
     await prefs.setString('user_name', user.name);
-    await prefs.setString('user_email', user.email);
-    await prefs.setString('user_role', user.role);
+    await prefs.setString('user_email', user.email.trim());
+    await prefs.setString('user_role', user.role.trim());
     if (user.token != null) await prefs.setString('user_token', user.token!);
     if (user.employeeId != null) await prefs.setString('user_employee_id', user.employeeId!);
     if (user.phone != null) await prefs.setString('user_phone', user.phone!);
@@ -73,6 +77,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> setUser(UserModel user) async {
+    if (user.email.trim().isEmpty) return;
     _user = user;
     await _saveToPrefs(user);
     _errorMessage = null;
@@ -165,12 +170,24 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password, {String? role}) async {
+    final cleanEmail = email.trim();
+    final cleanPass = password.trim();
+
+    if (cleanEmail.isEmpty || cleanPass.isEmpty) {
+      _errorMessage = 'Email and password are required.';
+      notifyListeners();
+      return false;
+    }
+
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final user = await ApiService.asyncLogin(email, password, expectedRole: role);
+      final user = await ApiService.asyncLogin(cleanEmail, password, expectedRole: role);
+      if (user.email.trim().isEmpty) {
+        throw Exception('Invalid user credentials.');
+      }
       _user = user;
       await _saveToPrefs(user);
 
@@ -179,7 +196,7 @@ class AuthProvider with ChangeNotifier {
       return true;
     } catch (e) {
       _isLoading = false;
-      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _errorMessage = e.toString().replaceAll('Exception: ', '').trim();
       notifyListeners();
       return false;
     }
@@ -187,6 +204,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> logout() async {
     _user = null;
+    _errorMessage = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     notifyListeners();

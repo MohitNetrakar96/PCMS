@@ -324,7 +324,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                              MaterialPageRoute(builder: (_) => const LoginScreen()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -352,13 +352,33 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
                       ),
                       const SizedBox(height: 14),
 
-                      // Sign In Link
+                      // Sign In & Sign Up Links
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Already have an account? ',
-                            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 14),
+                            'Need a new role? ',
+                            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                              );
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: Color(0xFF60A5FA),
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            ' • ',
+                            style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 13),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -370,8 +390,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
                             child: const Text(
                               'Sign In',
                               style: TextStyle(
-                                color: Color(0xFF60A5FA),
-                                fontSize: 14,
+                                color: Color(0xFF38BDF8),
+                                fontSize: 13,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
