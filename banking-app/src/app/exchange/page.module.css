@@ -1,0 +1,100 @@
+.rateBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 16px 16px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: var(--radius-md);
+  border: 1px solid #bfdbfe;
+}
+.rateLabel { font-size: 12px; color: var(--color-text-secondary-light); margin-bottom: 4px; }
+.rateValue { font-size: 16px; font-weight: 700; color: var(--color-primary); }
+.rateTag { padding: 4px 8px; background: var(--color-primary); color: #fff; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 1px; animation: pulse 2s ease-in-out infinite; }
+
+.exchangeCard {
+  margin: 0 16px 16px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+.currencyBlock { display: flex; flex-direction: column; gap: 8px; }
+.currencyLabel { font-size: 12px; font-weight: 600; color: var(--color-text-secondary-light); }
+.currencyInputRow { display: flex; gap: 10px; align-items: center; }
+.currencySelect {
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-primary-light);
+  background: var(--color-bg-muted);
+  outline: none;
+  cursor: pointer;
+}
+.amountInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-primary-light);
+  background: #fff;
+  outline: none;
+}
+.amountInput:focus { border-color: var(--color-primary); }
+.convertedAmount {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-success);
+  background: #f0fdf4;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid #bbf7d0;
+}
+.swapBtn {
+  align-self: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--gradient-blue);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(37,99,235,0.3);
+  transition: var(--transition);
+}
+.swapBtn:hover { transform: rotate(180deg) scale(1.1); }
+
+.feeCard {
+  margin: 0 16px 16px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.feeRow { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--color-bg-muted); }
+.feeRow:last-child { border-bottom: none; }
+.feeLabel { font-size: 13px; color: var(--color-text-secondary-light); }
+.feeValue { font-size: 13px; font-weight: 700; color: var(--color-text-primary-light); }
+
+.pairsList { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+.pairItem { display: flex; align-items: center; padding: 12px 16px; background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition); }
+.pairItem:hover { transform: translateX(3px); }
+.pairFlags { display: flex; align-items: center; gap: 6px; }
+.flag { padding: 4px 8px; background: var(--color-bg-muted); border-radius: 6px; font-size: 12px; font-weight: 700; color: var(--color-text-primary-light); }
+.flagArrow { font-size: 12px; color: var(--color-text-secondary-light); }
+.pairRate { font-size: 13px; font-weight: 600; color: var(--color-text-primary-light); }
+.pairRateValue { font-size: 12px; color: var(--color-text-secondary-light); margin-top: 2px; }
+.pairChange { font-size: 13px; font-weight: 700; }

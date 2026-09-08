@@ -1,0 +1,84 @@
+.chartCard {
+  margin: 0 16px 8px;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.chartTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary-light);
+}
+
+.timePills {
+  display: flex;
+  gap: 4px;
+}
+
+.timePill {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-outfit), sans-serif;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary-light);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.timePillActive {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.pcmsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 16px 24px;
+}
+
+.pcmsCard {
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.pcmsCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.pcmsIcon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.pcmsLabel {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.pcmsSub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
+}

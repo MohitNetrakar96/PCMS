@@ -1,0 +1,3 @@
+.dark { background: var(--color-bg-dark2); }
+.greetingDark { color: rgba(255,255,255,0.6) !important; }
+.nameDark { color: #fff !important; }

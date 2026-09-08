@@ -1,0 +1,263 @@
+.mapWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+/* Stats bar */
+.statsBar {
+  display: flex;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  padding: 10px 16px;
+  gap: 0;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+.stat:last-child {
+  border-right: none;
+}
+
+.statVal {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 9px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Leaflet map canvas */
+.leafletMap {
+  width: 100%;
+  height: 260px;
+  position: relative;
+  z-index: 0;
+}
+
+/* Leaflet icon overrides live in globals.css */
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 12px;
+  padding: 8px 14px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Floating Next Stop Panel */
+.floatingPanel {
+  background: #ffffff;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.nextBadge {
+  background: #dbeafe;
+  color: #2563eb;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.distLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.panelName {
+  font-size: 16px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 2px 0;
+}
+
+.panelArea {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0 0 10px 0;
+}
+
+.panelActions {
+  display: flex;
+  gap: 8px;
+}
+
+.btnNav {
+  flex: 1.2;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  border: none;
+  padding: 9px 0;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.btnNav:hover {
+  transform: translateY(-1px);
+}
+
+.btnCollect {
+  flex: 1;
+  background: #16a34a;
+  color: #ffffff;
+  border: none;
+  padding: 9px 0;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btnSkip {
+  flex: 1;
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  padding: 9px 0;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btnCollect:hover { filter: brightness(1.1); }
+.btnSkip:hover { filter: brightness(0.95); }
+
+/* Ordered Route List */
+.routeList {
+  padding: 10px 12px 12px;
+  max-height: 230px;
+  overflow-y: auto;
+  background: #f8fafc;
+}
+
+.routeListTitle {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+}
+
+.routeItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.routeItem:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.routeItemDone {
+  opacity: 0.55;
+}
+
+.routeIndex {
+  font-size: 10px;
+  font-weight: 800;
+  color: #94a3b8;
+  min-width: 24px;
+}
+
+.routeInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.routeName {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.routeArea {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.routeRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.routeAmt {
+  font-size: 12px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.routeStatus {
+  font-size: 12px;
+  font-weight: 900;
+}

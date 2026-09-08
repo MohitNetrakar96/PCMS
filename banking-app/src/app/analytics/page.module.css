@@ -1,0 +1,80 @@
+.summaryRow {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px 16px;
+}
+
+.summaryCard {
+  flex: 1;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  color: #fff;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.summaryValue {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.summaryChange {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.chartCard {
+  margin: 0 16px 16px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.chartTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.chartLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary-light);
+  margin-bottom: 4px;
+}
+
+.chartBalance {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text-primary-light);
+}
+
+.periodRow {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.periodBtn {
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-outfit), sans-serif;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary-light);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.periodActive {
+  background: var(--color-primary);
+  color: #fff;
+}

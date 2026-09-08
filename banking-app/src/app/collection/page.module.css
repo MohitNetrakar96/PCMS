@@ -1,0 +1,78 @@
+.collHeader {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 16px 20px 12px;
+}
+.collTitle { font-size: 20px; font-weight: 800; color: var(--color-text-primary-light); }
+.collDate { font-size: 12px; color: var(--color-text-secondary-light); margin-top: 2px; }
+.syncBtn {
+  display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+  background: var(--gradient-blue); color: #fff; border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 700; font-family: var(--font-outfit), sans-serif;
+  cursor: pointer; transition: var(--transition);
+}
+.syncing svg { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.summaryTiles { display: flex; gap: 10px; padding: 0 16px 14px; }
+.tile { flex: 1; border-radius: 14px; padding: 12px; text-align: center; }
+.tileNum { font-size: 18px; font-weight: 800; color: var(--color-text-primary-light); }
+.tileLabel { font-size: 11px; font-weight: 600; color: var(--color-text-secondary-light); margin-top: 2px; }
+
+.searchRow { padding: 0 16px 4px; }
+.searchBox {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; background: #fff; border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md); transition: var(--transition);
+}
+.searchBox:focus-within { border-color: var(--color-primary); }
+.searchInput {
+  flex: 1; border: none; outline: none; font-size: 14px;
+  font-family: var(--font-outfit), sans-serif; color: var(--color-text-primary-light);
+  background: transparent;
+}
+
+.areaHeader {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 10px 20px; background: var(--color-bg-muted); border: none; cursor: pointer;
+  transition: var(--transition);
+}
+.areaHeader:hover { background: #e2e8f0; }
+.areaLeft { display: flex; align-items: center; gap: 8px; }
+.areaName { font-size: 13px; font-weight: 700; color: var(--color-text-primary-light); }
+.areaBadge {
+  padding: 2px 8px; background: var(--color-primary); color: #fff;
+  border-radius: var(--radius-full); font-size: 11px; font-weight: 700;
+}
+
+.customerCard {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  background: #fff; border-bottom: 1px solid var(--color-bg-muted);
+  cursor: pointer; transition: var(--transition);
+}
+.customerCard:hover { background: #f8faff; transform: translateX(3px); }
+.customerAvatar {
+  width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.customerInfo { flex: 1; min-width: 0; }
+.customerNameRow { display: flex; align-items: center; gap: 6px; }
+.customerName { font-size: 14px; font-weight: 700; color: var(--color-text-primary-light); }
+.newBadge {
+  padding: 2px 6px; background: #dcfce7; color: #16a34a; border-radius: 4px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
+}
+.customerEmail { font-size: 11px; color: var(--color-text-secondary-light); display: block; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.customerMeta { display: flex; gap: 6px; margin-top: 4px; }
+.routeTag { padding: 2px 7px; background: #eff6ff; color: var(--color-primary); border-radius: 4px; font-size: 10px; font-weight: 700; }
+.balanceTag { padding: 2px 7px; background: var(--color-bg-muted); color: var(--color-text-secondary-light); border-radius: 4px; font-size: 10px; font-weight: 600; }
+
+.customerRight { text-align: right; flex-shrink: 0; }
+.dueAmount { font-size: 15px; font-weight: 800; color: var(--color-text-primary-light); }
+.statusPill { display: inline-block; padding: 3px 8px; border-radius: var(--radius-full); font-size: 10px; font-weight: 700; margin-top: 3px; }
+.statusCollected { background: #dcfce7; color: #16a34a; }
+.statusPending { background: #fef3c7; color: #d97706; }
+.lastPaid { font-size: 10px; color: var(--color-text-secondary-light); margin-top: 3px; }
+
+.emptyState { text-align: center; padding: 40px 20px; }
+.emptyText { font-size: 15px; color: var(--color-text-secondary-light); font-weight: 600; margin-top: 8px; }
+.statusOther { background: #f3e8ff; color: #7c3aed; }

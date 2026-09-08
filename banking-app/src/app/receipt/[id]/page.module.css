@@ -1,0 +1,136 @@
+.topBar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px 8px; gap: 8px;
+}
+.backBtn {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--color-bg-muted);
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+}
+.pageTitle { font-size: 16px; font-weight: 800; color: var(--color-text-primary-light); flex: 1; }
+.langRow { display: flex; gap: 4px; }
+.langBtn {
+  padding: 4px 8px; border: 1.5px solid var(--color-border); border-radius: 8px;
+  background: #fff; font-size: 10px; font-weight: 700; cursor: pointer;
+  font-family: var(--font-outfit), sans-serif; color: var(--color-text-secondary-light);
+  transition: var(--transition);
+}
+.langActive { border-color: var(--color-primary); color: var(--color-primary); background: #eff6ff; }
+
+/* Receipt Card */
+.receiptCard {
+  margin: 0 16px 14px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  overflow: hidden;
+  position: relative;
+}
+.duplicateBanner {
+  text-align: center;
+  background: repeating-linear-gradient(45deg, #fef3c7, #fef3c7 10px, #fff7ed 10px, #fff7ed 20px);
+  color: #d97706; font-size: 13px; font-weight: 900; letter-spacing: 2px;
+  padding: 8px; border-bottom: 2px dashed #fbbf24;
+}
+.receiptHeader {
+  display: flex; align-items: center; gap: 12px; padding: 16px 16px 12px;
+  background: var(--gradient-brand);
+}
+.companyLogo {
+  width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 900; color: #fff; flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+.companyName { font-size: 15px; font-weight: 800; color: #fff; }
+.companyTagline { font-size: 10px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+.receiptDivider { height: 1px; background: var(--color-bg-muted); margin: 0 16px; }
+
+.metaRow { display: flex; justify-content: space-between; padding: 10px 16px; }
+.metaLabel { font-size: 10px; color: var(--color-text-secondary-light); font-weight: 500; margin-bottom: 2px; }
+.metaValue { font-size: 12px; font-weight: 700; color: var(--color-text-primary-light); }
+
+.infoLine {
+  display: flex; justify-content: space-between; padding: 7px 16px;
+  border-bottom: 1px solid var(--color-bg-muted);
+}
+.infoLine:last-of-type { border-bottom: none; }
+.infoLabel { font-size: 11px; color: var(--color-text-secondary-light); }
+.infoVal { font-size: 11px; font-weight: 600; color: var(--color-text-primary-light); text-align: right; }
+
+.amtLine { display: flex; justify-content: space-between; padding: 6px 16px; font-size: 12px; color: var(--color-text-secondary-light); }
+.grandTotalLine {
+  display: flex; justify-content: space-between; padding: 10px 16px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  font-size: 14px; font-weight: 700; color: var(--color-text-primary-light);
+}
+.grandTotalVal { font-size: 18px; font-weight: 900; color: var(--color-primary); }
+.balanceLine { font-size: 12px; font-weight: 600; }
+
+/* QR */
+.qrSection { display: flex; align-items: center; gap: 14px; padding: 12px 16px; }
+.qrInfo { }
+.qrLabel { font-size: 12px; font-weight: 700; color: var(--color-text-primary-light); }
+.qrSub { font-size: 10px; color: var(--color-text-secondary-light); margin-top: 3px; }
+
+/* Signature */
+.sigSection { display: flex; align-items: flex-end; justify-content: space-between; padding: 10px 16px 14px; }
+.sigBox { display: flex; flex-direction: column; align-items: flex-start; }
+.sigLabel { font-size: 11px; font-weight: 700; color: var(--color-text-primary-light); margin-top: 4px; }
+.sigSub { font-size: 9px; color: var(--color-text-secondary-light); border-top: 1px solid var(--color-border); padding-top: 2px; margin-top: 2px; }
+.stampCircle {
+  width: 60px; height: 60px; border-radius: 50%;
+  border: 3px solid #16a34a; display: flex; align-items: center; justify-content: center;
+  color: #16a34a; font-size: 13px; font-weight: 900; letter-spacing: 1px;
+  transform: rotate(-12deg);
+}
+.thanksMsg { text-align: center; font-size: 12px; color: var(--color-text-secondary-light); padding: 0 16px 14px; }
+
+/* Actions */
+.actionsGrid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 12px;
+}
+.actionBtn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px;
+  border: none; border-radius: var(--radius-md); cursor: pointer; transition: var(--transition);
+  font-family: var(--font-outfit), sans-serif;
+}
+.actionBtn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.actionSent { opacity: 0.85; }
+.actionIcon { font-size: 22px; }
+.actionLabel { font-size: 12px; font-weight: 700; }
+
+/* Print Row */
+.printRow { display: flex; gap: 10px; padding: 0 16px 12px; }
+.printBtn {
+  flex: 1; padding: 12px; border: 2px solid var(--color-border); border-radius: var(--radius-md);
+  background: #fff; font-size: 12px; font-weight: 700; font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-primary-light); cursor: pointer; transition: var(--transition);
+}
+.printBtn:hover { border-color: var(--color-primary); color: var(--color-primary); background: #eff6ff; }
+.dupBtn { border-color: #d97706; color: #d97706; }
+.dupBtn:hover { background: #fef3c7; }
+
+/* Printer Modal */
+.printerModal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex;
+  align-items: center; justify-content: center; z-index: 9999;
+}
+.printerCard {
+  background: #fff; border-radius: var(--radius-lg); padding: 32px 24px;
+  text-align: center; width: 280px; box-shadow: var(--shadow-lg);
+}
+.printerIcon { font-size: 48px; margin-bottom: 12px; }
+.printerTitle { font-size: 16px; font-weight: 800; color: var(--color-text-primary-light); margin-bottom: 16px; }
+.printerProgress { height: 6px; background: var(--color-bg-muted); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+.printerProgressBar {
+  height: 100%; background: var(--gradient-brand); border-radius: 3px;
+  animation: printProgress 2.5s ease forwards;
+}
+@keyframes printProgress { from { width: 0%; } to { width: 100%; } }
+.printerStatus { font-size: 14px; font-weight: 600; color: var(--color-text-secondary-light); }
+.printerClose {
+  margin-top: 16px; padding: 10px 24px; background: var(--gradient-brand); color: #fff;
+  border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+  font-family: var(--font-outfit), sans-serif; cursor: pointer;
+}

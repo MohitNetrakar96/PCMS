@@ -1,0 +1,60 @@
+.calCard {
+  margin: 0 16px 16px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+.monthNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.monthTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-primary-light);
+}
+.monthBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-bg-muted);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--color-text-secondary-light);
+}
+.monthBtn:hover { background: var(--color-primary); color: #fff; }
+.selected {
+  background: rgba(37, 99, 235, 0.1) !important;
+  color: var(--color-primary) !important;
+  font-weight: 700 !important;
+  border-radius: 8px;
+}
+.eventDateBadge {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.eventDateDay {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-primary-light);
+  line-height: 1;
+}
+.eventDateMonth {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-secondary-light);
+  text-transform: uppercase;
+}

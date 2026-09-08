@@ -1,0 +1,149 @@
+.header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 14px 20px 10px;
+}
+.title { font-size: 20px; font-weight: 800; color: var(--color-text-primary-light); }
+.subtitle { font-size: 12px; color: var(--color-text-secondary-light); margin-top: 2px; }
+.mapToggle {
+  padding: 8px 12px; border: 1.5px solid var(--color-border); border-radius: 10px;
+  background: #fff; font-size: 12px; font-weight: 700; font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-primary-light); cursor: pointer; transition: var(--transition);
+}
+.mapToggleActive { border-color: var(--color-primary); color: var(--color-primary); background: #eff6ff; }
+
+/* Progress Card */
+.progressCard {
+  margin: 0 16px 14px; background: #fff; border-radius: var(--radius-lg);
+  padding: 16px; box-shadow: var(--shadow-md);
+}
+.progressStats { display: flex; gap: 0; margin-bottom: 14px; }
+.statItem { flex: 1; text-align: center; }
+.statNum { font-size: 22px; font-weight: 900; }
+.statLabel { font-size: 10px; color: var(--color-text-secondary-light); font-weight: 600; margin-top: 2px; }
+.progressBarBg { height: 10px; background: var(--color-bg-muted); border-radius: var(--radius-full); overflow: hidden; }
+.progressBarFill {
+  height: 100%; background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: var(--radius-full); transition: width 0.6s ease;
+}
+.progressFooter { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.progressPct { font-size: 12px; font-weight: 700; color: #16a34a; }
+.etaText { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--color-text-secondary-light); font-weight: 600; }
+
+/* Map */
+.mapContainer {
+  margin: 0 16px 14px; border-radius: var(--radius-lg); overflow: hidden;
+  background: #f0f9ff; box-shadow: var(--shadow-sm); position: relative;
+  border: 1.5px solid var(--color-border);
+}
+.mapCanvas { background: linear-gradient(160deg, #e0f2fe, #f0fdf4); }
+.mapBadge {
+  position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9);
+  border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700;
+  color: var(--color-text-secondary-light); display: flex; align-items: center; gap: 4px;
+  backdrop-filter: blur(4px);
+}
+
+/* Next Customer Card */
+.nextCard {
+  margin: 0 16px 14px; background: linear-gradient(135deg, #1e40af, #2563eb);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 8px 32px rgba(37,99,235,.3);
+}
+.nextBadge {
+  padding: 6px 16px; background: rgba(255,255,255,0.15);
+  font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 0.5px;
+}
+.nextContent { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.nextAvatar {
+  width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  font-weight: 800; color: #fff; flex-shrink: 0; backdrop-filter: blur(4px);
+}
+.nextInfo { flex: 1; min-width: 0; }
+.nextName { font-size: 15px; font-weight: 800; color: #fff; }
+.nextEmail { font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nextMeta { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.routeChip { padding: 2px 8px; background: rgba(255,255,255,0.2); color: #fff; border-radius: var(--radius-full); font-size: 10px; font-weight: 700; }
+.areaChip { padding: 2px 8px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); border-radius: var(--radius-full); font-size: 10px; font-weight: 600; }
+.nextAmount { text-align: right; flex-shrink: 0; }
+.dueAmt { font-size: 20px; font-weight: 900; color: #fff; }
+.dueLabel { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.nextActions { display: flex; gap: 8px; padding: 10px 16px 14px; }
+.collectBtn {
+  flex: 2; padding: 11px; background: #fff; color: #2563eb; border: none;
+  border-radius: 10px; font-size: 13px; font-weight: 800; font-family: var(--font-outfit), sans-serif;
+  cursor: pointer; transition: var(--transition);
+}
+.collectBtn:hover { background: #dbeafe; }
+.skipBtn {
+  flex: 1; padding: 11px; background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 10px; font-size: 12px; font-weight: 700; font-family: var(--font-outfit), sans-serif;
+  cursor: pointer; transition: var(--transition);
+}
+.skipBtn:hover { background: rgba(255,255,255,0.25); }
+.revisitBtn {
+  flex: 1; padding: 11px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 10px; font-size: 11px; font-weight: 700; font-family: var(--font-outfit), sans-serif;
+  cursor: pointer; transition: var(--transition);
+}
+.revisitActive { background: rgba(34,197,94,0.3); border-color: #22c55e; color: #fff; }
+
+/* All Done */
+.allDoneCard {
+  margin: 0 16px 14px; padding: 32px 20px; background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+  border-radius: var(--radius-lg); text-align: center; border: 1.5px solid #86efac;
+}
+.allDoneIcon { font-size: 48px; margin-bottom: 12px; }
+.allDoneTitle { font-size: 18px; font-weight: 800; color: #15803d; margin-bottom: 4px; }
+.allDoneSub { font-size: 13px; color: #16a34a; }
+
+/* Remaining / Sections */
+.sectionTitle { font-size: 13px; font-weight: 700; color: var(--color-text-primary-light); padding: 8px 20px 6px; }
+.remainingCard {
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+  background: #fff; border-bottom: 1px solid var(--color-bg-muted);
+}
+.remainingAvatar {
+  width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #eab308);
+  display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.remainingInfo { flex: 1; min-width: 0; }
+.remainingName { font-size: 14px; font-weight: 700; color: var(--color-text-primary-light); }
+.remainingRight { text-align: right; flex-shrink: 0; }
+.remainingAmt { font-size: 14px; font-weight: 800; color: var(--color-text-primary-light); }
+.tinySkipBtn {
+  padding: 3px 8px; background: #fef3c7; color: #d97706; border: 1px solid #fde68a;
+  border-radius: 6px; font-size: 10px; font-weight: 700; font-family: var(--font-outfit), sans-serif; cursor: pointer;
+}
+.tinyRevisitBtn {
+  padding: 3px 8px; background: #eff6ff; color: var(--color-primary); border: 1px solid #bfdbfe;
+  border-radius: 6px; font-size: 10px; font-weight: 700; font-family: var(--font-outfit), sans-serif; cursor: pointer;
+}
+.tinyRevisitActive { background: #dcfce7; color: #16a34a; border-color: #86efac; }
+
+/* Reminders */
+.reminderSection { margin: 0 16px 10px; background: #fff; border-radius: var(--radius-lg); padding: 4px 0; box-shadow: var(--shadow-sm); border: 1.5px solid #fde68a; }
+.reminderCard {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  border-bottom: 1px solid var(--color-bg-muted);
+}
+.reminderCard:last-child { border-bottom: none; }
+.reminderDot { width: 8px; height: 8px; border-radius: 50%; background: #f97316; flex-shrink: 0; }
+.reminderName { flex: 1; font-size: 13px; font-weight: 600; color: var(--color-text-primary-light); }
+.reminderAmt { font-size: 13px; font-weight: 800; color: var(--color-text-primary-light); }
+.goBtn {
+  padding: 5px 12px; background: var(--gradient-blue); color: #fff; border: none;
+  border-radius: 8px; font-size: 12px; font-weight: 700; font-family: var(--font-outfit), sans-serif; cursor: pointer;
+}
+
+/* Skipped */
+.skippedSection { margin: 0 16px 10px; background: #fff; border-radius: var(--radius-lg); padding: 4px 0; box-shadow: var(--shadow-sm); border: 1.5px solid #e2e8f0; }
+.skippedCard {
+  display: flex; align-items: center; justify-content: space-between; padding: 10px 16px;
+  border-bottom: 1px solid var(--color-bg-muted);
+}
+.skippedCard:last-child { border-bottom: none; }
+.skippedName { font-size: 13px; font-weight: 600; color: var(--color-text-secondary-light); }
+.undoBtn {
+  padding: 4px 12px; background: var(--color-bg-muted); color: var(--color-text-primary-light); border: none;
+  border-radius: 6px; font-size: 11px; font-weight: 700; font-family: var(--font-outfit), sans-serif; cursor: pointer;
+}

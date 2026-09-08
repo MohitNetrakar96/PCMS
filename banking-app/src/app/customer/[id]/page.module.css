@@ -1,0 +1,126 @@
+.topBar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px 8px;
+}
+.backBtn {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--color-bg-muted);
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition); flex-shrink: 0;
+}
+.backBtn:hover { background: var(--color-border); }
+.pageTitle { font-size: 17px; font-weight: 800; color: var(--color-text-primary-light); }
+.actionIconBtn {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; text-decoration: none; flex-shrink: 0; transition: var(--transition);
+}
+.actionIconBtn:hover { transform: scale(1.1); }
+
+.profileBanner {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+  margin: 0 16px 12px; border-radius: var(--radius-lg);
+  position: relative;
+}
+.photoContainer {
+  position: relative;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid #fff;
+}
+.customerPhoto {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.customerPhotoCircle {
+  width: 100%; height: 100%;
+  background: var(--gradient-blue);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  font-weight: 800; color: #fff;
+}
+.cameraOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: #fff;
+}
+.photoContainer:hover .cameraOverlay {
+  opacity: 1;
+}
+.profileInfo { flex: 1; }
+.profileName { font-size: 16px; font-weight: 800; color: var(--color-text-primary-light); }
+.profileEmail { font-size: 11px; color: var(--color-text-secondary-light); margin-top: 2px; }
+.profileAcc { font-size: 11px; color: var(--color-primary); font-weight: 600; margin-top: 2px; }
+.visitTimeBadge {
+  display: flex; align-items: center; gap: 4px; position: absolute; top: 10px; right: 12px;
+  background: #fff; border-radius: 8px; padding: 4px 8px;
+  font-size: 11px; font-weight: 700; color: var(--color-text-secondary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabRow { display: flex; gap: 0; margin: 0 16px 12px; background: var(--color-bg-muted); border-radius: 12px; padding: 4px; }
+.tabBtn {
+  flex: 1; padding: 8px; border: none; background: transparent; border-radius: 9px;
+  font-size: 13px; font-weight: 600; font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-secondary-light); cursor: pointer; transition: var(--transition);
+}
+.tabActive { background: #fff; color: var(--color-primary); box-shadow: var(--shadow-sm); }
+
+.tabContent { margin: 0 16px 12px; background: #fff; border-radius: var(--radius-lg); padding: 4px 0; box-shadow: var(--shadow-sm); }
+.infoRow { display: flex; justify-content: space-between; align-items: flex-start; padding: 11px 16px; border-bottom: 1px solid var(--color-bg-muted); gap: 12px; }
+.infoRow:last-child { border-bottom: none; }
+.infoLabel { font-size: 12px; color: var(--color-text-secondary-light); font-weight: 500; flex-shrink: 0; }
+.infoValue { font-size: 13px; font-weight: 600; color: var(--color-text-primary-light); text-align: right; }
+
+.pigmyCard { padding: 4px 0; }
+.pigmyItem { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--color-bg-muted); }
+.pigmyItem:last-child { border-bottom: none; }
+.pigmyItem span { font-size: 13px; color: var(--color-text-secondary-light); }
+.pigmyItem strong { font-size: 14px; color: var(--color-text-primary-light); }
+
+.section { margin: 0 16px 14px; }
+.sectionTitle { font-size: 13px; font-weight: 700; color: var(--color-text-primary-light); margin-bottom: 8px; }
+
+.gpsBtn {
+  width: 100%; padding: 12px; border: 2px dashed var(--color-primary); border-radius: var(--radius-md);
+  background: #eff6ff; color: var(--color-primary); font-size: 13px; font-weight: 700;
+  font-family: var(--font-outfit), sans-serif; cursor: pointer; transition: var(--transition);
+}
+.gpsBtn:disabled { border-color: var(--color-success); background: #f0fdf4; color: var(--color-success); cursor: default; }
+
+.statusGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.statusOption {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 8px;
+  border: 2px solid var(--color-border); border-radius: var(--radius-md); background: #fff;
+  cursor: pointer; transition: var(--transition); font-family: var(--font-outfit), sans-serif;
+}
+.statusOption:hover { border-color: var(--color-primary); background: #eff6ff; }
+.statusSelected { font-weight: 700; }
+.statusLabel { font-size: 11px; font-weight: 600; color: var(--color-text-primary-light); text-align: center; }
+
+.signatureHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.clearBtn {
+  padding: 4px 12px; background: #fee2e2; color: var(--color-danger); border: none;
+  border-radius: 6px; font-size: 12px; font-weight: 700; font-family: var(--font-outfit), sans-serif; cursor: pointer;
+}
+.signaturePad { position: relative; border: 2px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; background: #fafafa; }
+.signatureCanvas { display: block; touch-action: none; cursor: crosshair; }
+.signaturePlaceholder {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-size: 14px; color: #cbd5e1; pointer-events: none; font-weight: 500;
+}
+
+.remarksInput {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md); font-size: 14px; font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-primary-light); resize: none; outline: none; transition: var(--transition);
+}
+.remarksInput:focus { border-color: var(--color-primary); }

@@ -1,0 +1,57 @@
+.header { display: flex; align-items: flex-start; justify-content: space-between; padding: 14px 20px 10px; }
+.title { font-size: 20px; font-weight: 800; color: var(--color-text-primary-light); }
+.subtitle { font-size: 12px; color: var(--color-text-secondary-light); margin-top: 2px; }
+.agentBadge { width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-brand); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); }
+.agentAvatar { font-size: 20px; font-weight: 900; color: #fff; }
+
+.agentCard { display: flex; align-items: center; gap: 14px; margin: 0 16px 14px; background: #fff; border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow-md); }
+.agentInfo { flex: 1; }
+.agentName { font-size: 15px; font-weight: 800; color: var(--color-text-primary-light); }
+.agentDetail { font-size: 11px; color: var(--color-text-secondary-light); margin-top: 2px; }
+.collPctCircle { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.pctLabel { font-size: 10px; font-weight: 700; color: var(--color-text-secondary-light); }
+
+.statsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 14px; }
+.statCard { border-radius: var(--radius-md); padding: 14px; text-align: center; }
+.statIcon { font-size: 20px; }
+.statNum { font-size: 24px; font-weight: 900; margin-top: 4px; }
+.statLabel { font-size: 11px; font-weight: 600; color: var(--color-text-secondary-light); margin-top: 2px; }
+
+.section { margin: 0 16px 14px; background: #fff; border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); }
+.sectionTitle { font-size: 13px; font-weight: 700; color: var(--color-text-primary-light); margin-bottom: 12px; }
+.graphSubtitle { font-size: 11px; color: var(--color-text-secondary-light); margin-top: -8px; margin-bottom: 10px; }
+.chart { display: block; width: 100%; height: auto; }
+
+.breakdownRow { margin-bottom: 12px; }
+.breakdownTop { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.breakdownLabel { font-size: 12px; color: var(--color-text-secondary-light); }
+.breakdownVal { font-size: 12px; font-weight: 700; color: var(--color-text-primary-light); }
+.breakdownBarBg { height: 7px; background: var(--color-bg-muted); border-radius: var(--radius-full); overflow: hidden; }
+.breakdownBarFill { height: 100%; border-radius: var(--radius-full); transition: width 0.8s ease; }
+
+.handSection { display: flex; gap: 10px; padding: 0 16px 14px; }
+.handCard { flex: 1; border-radius: var(--radius-lg); padding: 16px; text-align: center; }
+.handIcon { font-size: 24px; margin-bottom: 6px; }
+.handAmt { font-size: 18px; font-weight: 900; color: var(--color-text-primary-light); }
+.handLabel { font-size: 11px; color: var(--color-text-secondary-light); font-weight: 600; margin-top: 2px; }
+
+.exportRow { display: flex; gap: 10px; padding: 0 16px 12px; }
+.exportBtn {
+  flex: 1; padding: 12px; border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+  background: #fff; font-size: 12px; font-weight: 700; font-family: var(--font-outfit), sans-serif;
+  color: var(--color-text-primary-light); cursor: pointer; transition: var(--transition);
+}
+.exportBtn:hover { border-color: var(--color-primary); color: var(--color-primary); background: #eff6ff; }
+.excelBtn { border-color: #22c55e; color: #16a34a; }
+.excelBtn:hover { background: #dcfce7; }
+.exporting { opacity: 0.7; cursor: wait; }
+
+.submittedBox { padding: 14px; background: #dcfce7; border-radius: var(--radius-md); text-align: center; font-size: 13px; font-weight: 600; color: #16a34a; border: 1.5px solid #86efac; }
+.submitting { opacity: 0.7; }
+
+.submitCashBtn {
+  width: 100%; padding: 13px; background: linear-gradient(135deg, #1e293b, #334155);
+  color: #fff; border: none; border-radius: var(--radius-md); font-size: 14px;
+  font-weight: 700; font-family: var(--font-outfit), sans-serif; cursor: pointer; transition: var(--transition);
+}
+.submitCashBtn:hover { opacity: 0.9; transform: translateY(-1px); }
